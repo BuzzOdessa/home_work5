@@ -114,51 +114,42 @@ foreach (var animal in romashkaHotel)
 
 // TODO: get all animals with name 'Parrot' from genericHotel
 var genericHotelParrots = genericHotel.Where(x => x.Name == "Parrot");
-PrintCollection(genericHotelParrots, $"Тварини з іменем  \"Parrot\" у genericHotel");
 
 // TODO: get all animals with name 'Parrot' from kyivHotel
 var kyivHotelParrots = kyivHotel.Where(x => x.Name == "Parrot");
-PrintCollection(kyivHotelParrots, $"Тварини з іменем  \"Parrot\" у kyivHotelParrots");
 
 // TODO: get all animals with name 'Parrot' from romashkaHotel
 var romashkaHotelParrots = romashkaHotel.OfType<IAnimal>().Where(x => x.Name == "Parrot");
-PrintCollection(romashkaHotelParrots, $"Тварини з іменем  \"Parrot\" у romashkaHotel");
 
 // TODO: extend animals entity to have a property 'Age' and sort animals by age
 
 #region Домашка
-//додати сортування тварин за віком 
+Console.WriteLine("Домашка");
+//додати сортування тварин за віком
 var sortedAnimals = genericHotel.OrderBy(x => x.Age);
 PrintCollection(sortedAnimals, $"genericHotel тварини отсортовані по Age");
 
-/*
- * Чисто эксперимент. Не обращать внимание. 
- * Эксперимент показывает когда именно задействуется интерфейс IComparable<Cat>
- * var cats1 = new List<Cat>
-{
-    {animalFactory.CreateCat("animalName", null, 10, Color.Navy)} ,
-    {animalFactory.CreateCat("animalName1", null, 10, Color.Navy)} ,
-    {animalFactory.CreateCat("animalName2", null, 10, Color.Navy)} ,
-};
-sortedAnimals = cats1.OrderBy(x => x);
-PrintCollection(sortedAnimals, $"genericHotel Коти отсортованнык как коты");*/
-
-
 sortedAnimals = kyivHotel.OrderBy(x => x.Age);
 PrintCollection(sortedAnimals, $"kyivHotel тварини отсортовані  по Age");
+
+// romashkaHotel  ниче не знает об объектах которые содержит. Надо привести насильно через OfType. Почти  все равно к Animal или IAnimal
+// Но поскольку метод AddAnimal  на данный момент принимает только IAnimal, то разумней приводить к нему. Ибо есть шанс что в него засунут какой-нить IAnimal, не являющийся Animal
 sortedAnimals = romashkaHotel.OfType<IAnimal>().OrderBy(x => x.Age);
 PrintCollection(sortedAnimals, $"romashkaHotel тварини отсортовані  по Age");
 
-Console.WriteLine("Фільтрація тварин по імені власника");
 
+
+Console.WriteLine("Фільтрація тварин по імені власника");
 //отримати всіх тварин, у яких власники мають ім'я (вводимо із клавіатури, або обираємо його випадковим чином)
-var ownerFilter = "Jane";
+string? ownerFilter;
 Console.WriteLine("Введіть ім'я власника");
 ownerFilter = Console.ReadLine();
 var ownerAnimals = genericHotel.Where(x => x.Owner?.Name == ownerFilter);
 PrintCollection(ownerAnimals, $"Тварини власника {ownerFilter} у genericHotel");
+
 ownerAnimals = kyivHotel.Where(x => x.Owner?.Name == ownerFilter);
 PrintCollection(ownerAnimals, $"Тварини власника {ownerFilter} у kyivHotel");
+
 ownerAnimals = romashkaHotel.OfType<IAnimal>().Where(x => x.Owner?.Name == ownerFilter);
 PrintCollection(ownerAnimals, $"Тварини власника {ownerFilter} у romashkaHotel");
 

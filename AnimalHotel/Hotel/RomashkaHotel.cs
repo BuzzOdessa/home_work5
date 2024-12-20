@@ -31,6 +31,7 @@ public class RomashkaHotel : IEnumerable
         }
     }
 
+    // Метод изменил. Вместо     public void AddAnimal(object animal)
     public void AddAnimal(IAnimal animal)
     {
         if (animal == null)
@@ -48,7 +49,7 @@ public class RomashkaHotel : IEnumerable
     {
         foreach (var animal in _animals)
         {
-            if (animal is IAnimal iAnimal)
+            if (animal is IAnimal iAnimal) // Проверка в принципе уже лишняя. Засунуть можно только через AddAnimal(IAnimal animal)
             {
                 Console.WriteLine(iAnimal.Name);
             }
@@ -57,7 +58,14 @@ public class RomashkaHotel : IEnumerable
 
     public object this[int index]
     {
-        get => _animals[index];
+        //index может выйти за диапазон
+        get
+        {
+            if (index >= 0 && index < _count)
+                return _animals[index];
+            else
+                throw new ArgumentException($"index {index} вышел за пределы допустимого диапазона");
+        }
         set => _animals[index] = value;
     }
 

@@ -47,7 +47,14 @@ public class GenericHotel<TData> : IEnumerable<TData> where TData : IAnimal
 
     public TData this[int index]
     {
-        get => _animals[index];
+        //index может выйти за диапазон
+        get
+        {
+            if (index >= 0 && index < _count)
+                return _animals[index];
+            else
+                throw new ArgumentException($"index {index} вышел за пределы допустимого диапазона");
+        }
         set => _animals[index] = value;
     }
 

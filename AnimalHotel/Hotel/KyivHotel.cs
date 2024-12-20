@@ -44,7 +44,14 @@ public class KyivHotel : IEnumerable<IAnimal>
     }
     public IAnimal this[int index]
     {
-        get => _animals[index];
+        //index может выйти за диапазон
+        get
+        {
+            if (index >= 0 && index < _count)
+                return _animals[index];
+            else
+                throw new ArgumentException($"index {index} вышел за пределы допустимого диапазона");
+        }
         set => _animals[index] = value;
     }
     public IEnumerator<IAnimal> GetEnumerator()
